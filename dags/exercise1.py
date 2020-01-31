@@ -1,11 +1,17 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
+from datetime import datetime, timedelta
 
 default_args = {
-    'owner': 'AirFlow'
+    'owner': 'AirFlow',
+    'start_date': datetime(2015, 6, 1),
+    # 'schedule_interval': '@daily'
+    'schedule_interval': ['45 13 * * 1,3,5'],
+    'retry_delay': timedelta(minutes=5)
+
 }
 
-dag = DAG('Exercise1', default_args=default_args, schedule_interval=None)
+dag = DAG('Exercise1', default_args=default_args)
 
 t1 = BashOperator(
     task_id='Task1',
@@ -33,7 +39,7 @@ t4 = BashOperator(
 
 t5 = BashOperator(
     task_id='Task5',
-    bash_command='ls /tmp/task* && cat /tmp/task*',
+    bash_command='pwd',
     dag = dag 
 )
 
