@@ -40,7 +40,8 @@ class LaunchLibraryOperator(BaseOperator):
         self.result_filename = result_filename
 
     def execute(self, context):
-        query = "{}/1.4/{}?startdate={}&enddate={}".format(BaseHook.get_connection(self.conn_id).host, self.endpoint,
+        print(self.params)
+        query = "{}1.4/{}?startdate={}&enddate={}".format(BaseHook.get_connection(self.conn_id).host, self.endpoint,
             self.params['startdate'], self.params['enddate'])
         print(query)
         _download_rocket_launches(query, result_path=self.result_path, result_filename=self.result_filename)
