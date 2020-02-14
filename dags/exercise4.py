@@ -15,7 +15,7 @@ with models.DAG('Exercise4', default_args=default_args) as dag:
 
 
     upload_data = PostgresToGoogleCloudStorageOperator(
-        postgresq_conn_id='postgres',
+        postgres_conn_id='postgres',
         task_id='PostgresToCloud',
         sql=SQL_QUERY,
         filename="bla-123",
