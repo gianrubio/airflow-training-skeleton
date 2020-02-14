@@ -7,7 +7,7 @@ from operators.launch_hook import LaunchLibraryOperator
 args = {"owner": "godatadriven", "start_date": airflow.utils.dates.days_ago(10)}
 
 dag = DAG(dag_id="download_rocket_launches", default_args=args, description="DAG downloading rocket launches from Launch Library.", 
-    schedule_interval="0 0 * * *")
+    schedule_interval="* * * * *")
     
 download_rocket_launches = LaunchLibraryOperator(
     task_id="download_rocket_launches", 
