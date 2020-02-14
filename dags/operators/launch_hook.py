@@ -12,7 +12,6 @@ import tempfile
 def _download_rocket_launches(query, result_path, result_filename, **context):
 #    query = f"https://launchlibrary.net/1.4/launch?startdate={ds}&enddate={tomorrow_ds}"
 
-    pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
     response = requests.get(query)
     f_path = posixpath.join(result_path, result_filename)
     
