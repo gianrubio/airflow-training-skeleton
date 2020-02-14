@@ -23,7 +23,7 @@ def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filena
     gcs.upload("rocket-launches", result_filename, f_path)
 
 class LaunchLibraryOperator(BaseOperator):
-    template_fields = ("_params")
+    template_fields = ("_params",)
     @apply_defaults
     def __init__(
             self,
