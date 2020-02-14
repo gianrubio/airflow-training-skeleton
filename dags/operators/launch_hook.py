@@ -7,7 +7,7 @@ from airflow.models import DAG, BaseOperator
 from airflow.hooks.base_hook import BaseHook
 from airflow.utils.decorators import apply_defaults
 from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
-
+import tempfile
 
 def _download_rocket_launches(query, result_path, result_filename, **context):
 #    query = f"https://launchlibrary.net/1.4/launch?startdate={ds}&enddate={tomorrow_ds}"
@@ -15,12 +15,12 @@ def _download_rocket_launches(query, result_path, result_filename, **context):
     pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
     response = requests.get(query)
     f_path = posixpath.join(result_path, result_filename)
-
-    with open(f_path, "w") as f:    
-        f.write(response.text)
+    
+    tf = tempfile.TemporaryFile()
+    tf.write(response.text)
 
     gcs = GoogleCloudStorageHook()
-    gcs.upload("rocket-launches", result_filename, f_path)
+    gcs.upload("rocket-launches", result_filename, tf.name)
 
 class LaunchLibraryOperator(BaseOperator):
     template_fields = ("params",)
@@ -43,7 +43,6 @@ class LaunchLibraryOperator(BaseOperator):
         self.result_filename = result_filename
 
     def execute(self, context):
-        print("1234")
         print(self.params)
         query = "{}1.4/{}?startdate={}&enddate={}".format(BaseHook.get_connection(self.conn_id).host, self.endpoint,
             self.params['startdate'], self.params['enddate'])
