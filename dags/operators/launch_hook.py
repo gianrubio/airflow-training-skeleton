@@ -43,6 +43,7 @@ class LaunchLibraryOperator(BaseOperator):
         self.result_filename = result_filename
 
     def execute(self, context):
+        print("123")
         print(self.params)
         query = "{}1.4/{}?startdate={}&enddate={}".format(BaseHook.get_connection(self.conn_id).host, self.endpoint,
             self.params['startdate'], self.params['enddate'])
