@@ -18,7 +18,7 @@ with models.DAG('Exercise4', default_args=default_args) as dag:
         postgres_conn_id='postgres',
         task_id='PostgresToCloud',
         sql=SQL_QUERY,
-        filename="bla-123",
+        filename="land_registry_price_paid_uk.txt",
         bucket=GCS_BUCKET,
         dag = dag 
     )

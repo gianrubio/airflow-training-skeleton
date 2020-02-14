@@ -17,7 +17,7 @@ with models.DAG('FetchExchangeRates', default_args=default_args) as dag:
         task_id='FetchExchangeRates',
         endpoint='history?start_at=2014-01-01&end_at=2018-01-02&symbols=EUR&base=GBP',
         gcs_bucket=GCS_BUCKET,
-        gcs_path="bla.json",
+        gcs_path="exchange_rates_2014-2018.json",
         dag=dag,
     )
 
