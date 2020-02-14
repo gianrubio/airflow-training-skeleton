@@ -19,7 +19,7 @@ def _download_rocket_launches(query, result_path, result_filename, **context):
     tf.write(response.text)
 
     gcs = GoogleCloudStorageHook()
-    gcs.upload("rocket-launches", result_filename, tf.name)
+    gcs.upload("rocket-launches", f_path, tf.name)
 
 class LaunchLibraryOperator(BaseOperator):
     template_fields = ("params",)
