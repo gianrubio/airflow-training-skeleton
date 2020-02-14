@@ -20,7 +20,7 @@ def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filena
 
 
 class LaunchLibraryOperator(BaseOperator):
-
+    template_fields = ["ds", "tomorrow_ds"]
     @apply_defaults
     def __init__(
             self,
