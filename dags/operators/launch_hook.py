@@ -16,7 +16,7 @@ def _download_rocket_launches(query, result_path, result_filename, **context):
     f_path = posixpath.join(result_path, result_filename)
     
     tf = tempfile.TemporaryFile()
-    tf.write(response.text)
+    tf.write(response.text.encode())
 
     gcs = GoogleCloudStorageHook()
     gcs.upload("rocket-launches", f_path, tf.name)
