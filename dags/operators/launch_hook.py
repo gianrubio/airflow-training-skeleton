@@ -1,0 +1,48 @@
+import json
+import pathlib
+import posixpath
+import airflow
+import requests
+from airflow.models import DAG, BaseOperator
+from airflow.hooks.base_hook import BaseHook
+from airflow.utils.decorators import apply_defaults
+
+
+def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filename, **context):
+#    query = f"https://launchlibrary.net/1.4/launch?startdate={ds}&enddate={tomorrow_ds}"
+
+    pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
+    response = requests.get(query)
+    
+    with open(posixpath.join(result_path, result_filename), "w") as f:    
+        f.write(response.text)
+
+
+
+class LaunchLibraryOperator(BaseOperator):
+
+    @apply_defaults
+    def __init__(
+            self,
+            conn_id: str,
+            endpoint: str,
+            params: dict,
+            result_path: str,
+            result_filename: str,
+            *args, **kwargs) -> None:
+
+        super().__init__(*args, **kwargs)
+
+        self.conn_id = conn_id
+        self.endpoint = endpoint
+        self.params = params
+        self.result_path = result_path
+        self.result_filename = result_filename
+
+    def execute(self, context):
+        query = "{}/1.4/{}?startdate={}&enddate={}".format(BaseHook.get_connection(self.conn_id).host, self.endpoint,
+            self.params['startdate'], self.params['enddate'])
+        print(query)
+        _download_rocket_launches(query, result_path=self.result_path, result_filename=self.result_filename)
+
+
