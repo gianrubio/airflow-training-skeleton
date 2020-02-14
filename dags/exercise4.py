@@ -13,6 +13,7 @@ SQL_QUERY="SELECT * FROM land_registry_price_paid_uk LIMIT 1000"
 
 with models.DAG('Exercise4', default_args=default_args) as dag:
 
+
     upload_data = PostgresToGoogleCloudStorageOperator(
         task_id='PostgresToCloud',
         sql=SQL_QUERY,
