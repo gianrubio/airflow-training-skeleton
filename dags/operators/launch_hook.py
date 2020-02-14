@@ -9,7 +9,7 @@ from airflow.utils.decorators import apply_defaults
 from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
 
 
-def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filename, **context):
+def _download_rocket_launches(query, result_path, result_filename, **context):
 #    query = f"https://launchlibrary.net/1.4/launch?startdate={ds}&enddate={tomorrow_ds}"
 
     pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
