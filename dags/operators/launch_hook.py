@@ -6,6 +6,7 @@ import requests
 from airflow.models import DAG, BaseOperator
 from airflow.hooks.base_hook import BaseHook
 from airflow.utils.decorators import apply_defaults
+from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
 
 
 def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filename, **context):
@@ -13,11 +14,13 @@ def _download_rocket_launches(ds, tomorrow_ds, query, result_path, result_filena
 
     pathlib.Path(result_path).mkdir(parents=True, exist_ok=True)
     response = requests.get(query)
-    
-    with open(posixpath.join(result_path, result_filename), "w") as f:    
+    f_path = posixpath.join(result_path, result_filename)
+
+    with open(f_path, "w") as f:    
         f.write(response.text)
 
-
+    gcs = GoogleCloudStorageHook()
+    gcs.upload("rocket-launches", result_filename, f_path)
 
 class LaunchLibraryOperator(BaseOperator):
     template_fields = ["ds", "tomorrow_ds"]
