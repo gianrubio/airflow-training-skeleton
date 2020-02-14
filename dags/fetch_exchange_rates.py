@@ -15,7 +15,7 @@ with models.DAG('FetchExchangeRates', default_args=default_args) as dag:
 
     upload_data = HttpToGcsOperator(
         task_id='FetchExchangeRates',
-        endpoint='https://api.exchangeratesapi.io/history?start_at=2014-01-01&end_at=2018-01-02&symbols=EUR&base=GBP',
+        endpoint='history?start_at=2014-01-01&end_at=2018-01-02&symbols=EUR&base=GBP',
         gcs_bucket=GCS_BUCKET,
         gcs_path="bla.json",
         dag=dag,
